@@ -25,7 +25,10 @@ A security log analytics pipeline and interactive detection dashboard. Parses ra
   - PostgreSQL relational schema (`events`, `ip_enrichment`, `alerts`) and analytical indexes
   - High-throughput bulk event loader (`parser/load_events.py`)
   - MaxMind GeoLite2-City IP enrichment (`parser/enrich_ips.py`) and country aggregation sanity checks
-- [ ] **Day 3: Detection Rules (MITRE ATT&CK Mapping)**
+- [x] **Day 3: Detection Rules (MITRE ATT&CK Mapping)**
+  - Four SQL detection rules (`Brute Force`, `Password Spraying`, `Post-Compromise Login`, `Off-Hours Login`)
+  - Repeatable rule runner (`sql/run_rules.py`) populating the `alerts` table
+  - Rule logic, threshold rationale, and spot-check documentation (`docs/detection-rules.md`)
 - [ ] **Day 4: Streamlit Analytics Dashboard**
 - [ ] **Day 5: Docker Containerization, CI/CD, and Production Deployment**
 
@@ -81,7 +84,12 @@ python parser/load_events.py data/OpenSSH_2k.log
 python parser/enrich_ips.py
 ```
 
-### 5. Run Unit Tests
+### 5. Run MITRE ATT&CK SQL Detection Rules (Day 3)
+```bash
+python sql/run_rules.py
+```
+
+### 6. Run Unit Tests
 ```bash
 pytest -v
 ```
