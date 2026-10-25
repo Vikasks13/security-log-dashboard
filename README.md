@@ -21,7 +21,10 @@ A security log analytics pipeline and interactive detection dashboard. Parses ra
   - Loghub OpenSSH sample acquisition and licensing documentation
   - Regex parser for failed passwords, invalid users, and accepted logins
   - Pytest unit test suite and CLI execution summary
-- [ ] **Day 2: Schema, Loading, and GeoIP Enrichment**
+- [x] **Day 2: Schema, Loading, and GeoIP Enrichment**
+  - PostgreSQL relational schema (`events`, `ip_enrichment`, `alerts`) and analytical indexes
+  - High-throughput bulk event loader (`parser/load_events.py`)
+  - MaxMind GeoLite2-City IP enrichment (`parser/enrich_ips.py`) and country aggregation sanity checks
 - [ ] **Day 3: Detection Rules (MITRE ATT&CK Mapping)**
 - [ ] **Day 4: Streamlit Analytics Dashboard**
 - [ ] **Day 5: Docker Containerization, CI/CD, and Production Deployment**
@@ -46,7 +49,7 @@ security-log-dashboard/
 
 ---
 
-## Quickstart (Day 1)
+## Quickstart
 
 ### 1. Setup Environment
 ```bash
@@ -60,7 +63,25 @@ pip install -r requirements.txt
 python parser/ssh_parser.py data/OpenSSH_2k.log
 ```
 
-### 3. Run Unit Tests
+### 3. Start PostgreSQL & Load Structured Events (Day 2)
+Start PostgreSQL via Docker Compose (or let `load_events.py` automatically launch the embedded PostgreSQL instance in `.pgdata/`):
+```bash
+# Optional if using Docker:
+docker compose up -d db
+
+# Initialize schema and bulk-insert parsed SSH events:
+python parser/load_events.py data/OpenSSH_2k.log
+```
+
+### 4. GeoIP Enrichment (`GeoLite2-City.mmdb`)
+1. Create a free account at [MaxMind GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) and download **`GeoLite2-City.mmdb`**.
+2. Place `GeoLite2-City.mmdb` inside the `data/` directory (`data/GeoLite2-City.mmdb` is excluded via `.gitignore`).
+3. Run the enrichment script (falls back to verified cached coordinates if `.mmdb` is absent):
+```bash
+python parser/enrich_ips.py
+```
+
+### 5. Run Unit Tests
 ```bash
 pytest -v
 ```
