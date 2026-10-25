@@ -41,6 +41,9 @@ env/
 *.mmdb
 GeoLite2-City.mmdb
 
+# Local embedded PostgreSQL data directory
+.pgdata/
+
 # Unit test / coverage
 .pytest_cache/
 .coverage
