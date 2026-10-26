@@ -29,7 +29,11 @@ A security log analytics pipeline and interactive detection dashboard. Parses ra
   - Four SQL detection rules (`Brute Force`, `Password Spraying`, `Post-Compromise Login`, `Off-Hours Login`)
   - Repeatable rule runner (`sql/run_rules.py`) populating the `alerts` table
   - Rule logic, threshold rationale, and spot-check documentation (`docs/detection-rules.md`)
-- [ ] **Day 4: Streamlit Analytics Dashboard**
+- [x] **Day 4: Streamlit Analytics Dashboard**
+  - Cached PostgreSQL query layer (`app/db.py`) with `st.cache_resource` & `st.cache_data`
+  - Executive KPI cards, Hourly Attack Timeline, Top 10 Attacker IPs, Most Targeted Usernames, and Global GeoIP Map (`app/main.py`)
+  - Interactive MITRE ATT&CK Alerts Table with CSV export and global sidebar filters
+  - High-resolution dashboard screenshots in `docs/`
 - [ ] **Day 5: Docker Containerization, CI/CD, and Production Deployment**
 
 ---
@@ -89,7 +93,28 @@ python parser/enrich_ips.py
 python sql/run_rules.py
 ```
 
-### 6. Run Unit Tests
+### 6. Launch the Streamlit Security Dashboard (Day 4)
+```bash
+streamlit run app/main.py
+```
+
+### 7. Run Unit Tests
 ```bash
 pytest -v
 ```
+
+---
+
+## Dashboard Previews
+
+### Overview, Sidebar Filters, KPIs & Hourly Attack Timeline
+![Dashboard Overview](docs/dashboard_overview.png)
+
+### Top 10 Attacker IPs & Most Targeted Usernames
+![Attacker Analytics Charts](docs/attack_analytics_charts.png)
+
+### Global Attacker Origin Map (GeoLite2) & Country Breakdown
+![Global Threat Map](docs/global_threat_map.png)
+
+### MITRE ATT&CK Security Alerts Table
+![MITRE ATT&CK Alerts Table](docs/mitre_alerts_table.png)
